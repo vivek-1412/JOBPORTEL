@@ -1,0 +1,277 @@
+/* ============================================================
+   resume.css — Resume Analyzer Page Styles
+   JobPort | Bootstrap 5
+============================================================ */
+
+/* ── Hero ── */
+.resume-hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 55%, #1a56db 100%);
+    padding: 70px 0 60px;
+    position: relative;
+}
+
+.resume-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size: 28px 28px;
+}
+
+.hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 50px;
+    padding: 6px 18px;
+    font-size: .85rem;
+    color: rgba(255,255,255,.9);
+}
+
+/* ── Upload Card ── */
+.upload-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 36px 32px;
+    box-shadow: 0 4px 24px rgba(0,0,0,.08);
+    border: 1px solid #e2e8f0;
+}
+
+/* ── Drop Zone ── */
+.drop-zone {
+    border: 2.5px dashed #cbd5e1;
+    border-radius: 16px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+    background: #f8fafc;
+    min-height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.drop-zone.dragover {
+    border-color: #1a56db;
+    background: #eff6ff;
+}
+
+.drop-zone.has-file {
+    border-color: #16a34a;
+    background: #f0fdf4;
+    cursor: default;
+}
+
+.drop-content { width: 100%; }
+
+.drop-icon {
+    font-size: 2.8rem;
+    color: #94a3b8;
+    display: block;
+    margin-bottom: 12px;
+}
+
+/* ── File Preview ── */
+.file-preview {
+    display: flex !important;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    padding: 8px 4px;
+}
+
+.file-preview-icon {
+    font-size: 2.2rem;
+    color: #1a56db;
+    flex-shrink: 0;
+}
+
+/* ── Result Cards ── */
+.result-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.07);
+    border: 1px solid #e2e8f0;
+}
+
+/* ── Score Circle ── */
+.score-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #fff;
+    position: relative;
+    background: conic-gradient(#1a56db 0%, #e2e8f0 0%);
+    box-shadow: 0 4px 16px rgba(26,86,219,.25);
+    transition: background 1.5s ease;
+}
+
+.score-circle.score-poor      { background: conic-gradient(#ef4444 var(--pct), #fee2e2 0%); }
+.score-circle.score-fair      { background: conic-gradient(#f59e0b var(--pct), #fef3c7 0%); }
+.score-circle.score-good      { background: conic-gradient(#3b82f6 var(--pct), #dbeafe 0%); }
+.score-circle.score-excellent { background: conic-gradient(#16a34a var(--pct), #dcfce7 0%); }
+
+/* ── Progress Bar colors ── */
+.progress-bar.score-poor      { background-color: #ef4444 !important; }
+.progress-bar.score-fair      { background-color: #f59e0b !important; }
+.progress-bar.score-good      { background-color: #3b82f6 !important; }
+.progress-bar.score-excellent { background-color: #16a34a !important; }
+
+/* ── Score Badge ── */
+.badge.score-poor      { background: #fee2e2 !important; color: #b91c1c !important; }
+.badge.score-fair      { background: #fef3c7 !important; color: #92400e !important; }
+.badge.score-good      { background: #dbeafe !important; color: #1e40af !important; }
+.badge.score-excellent { background: #dcfce7 !important; color: #15803d !important; }
+
+/* ── Skill / Job-title Badges ── */
+.skill-badge {
+    background: #eff6ff;
+    color: #1a56db;
+    border: 1px solid #bfdbfe;
+    border-radius: 50px;
+    padding: 4px 14px;
+    font-size: .80rem;
+    font-weight: 600;
+}
+
+.title-badge {
+    background: #f0fdf4;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+    border-radius: 50px;
+    padding: 4px 14px;
+    font-size: .80rem;
+    font-weight: 600;
+}
+
+/* ── Feedback / Strengths Lists ── */
+.feedback-list,
+.strengths-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.feedback-list li {
+    padding: 10px 14px 10px 38px;
+    border-radius: 10px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    margin-bottom: 10px;
+    font-size: .88rem;
+    color: #78350f;
+    position: relative;
+    line-height: 1.5;
+}
+
+.feedback-list li::before {
+    content: "⚠️";
+    position: absolute;
+    left: 12px;
+    top: 10px;
+}
+
+.strengths-list li {
+    padding: 10px 14px 10px 38px;
+    border-radius: 10px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    margin-bottom: 10px;
+    font-size: .88rem;
+    color: #14532d;
+    position: relative;
+    line-height: 1.5;
+}
+
+.strengths-list li::before {
+    content: "✅";
+    position: absolute;
+    left: 12px;
+    top: 10px;
+}
+
+/* ── Template Cards ── */
+.template-card {
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 24px 20px;
+    text-align: center;
+    height: 100%;
+    transition: border-color .2s, box-shadow .2s, transform .2s;
+    background: #fff;
+}
+
+.template-card:hover {
+    border-color: #1a56db;
+    box-shadow: 0 8px 24px rgba(26,86,219,.12);
+    transform: translateY(-3px);
+}
+
+.template-card.recommended {
+    border-color: #1a56db;
+    background: #eff6ff;
+    position: relative;
+}
+
+.template-card.recommended::after {
+    content: "⭐ Recommended";
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a56db;
+    color: #fff;
+    font-size: .72rem;
+    font-weight: 700;
+    padding: 3px 14px;
+    border-radius: 99px;
+    white-space: nowrap;
+}
+
+.template-icon { font-size: 2.2rem; margin-bottom: 10px; }
+.template-name { font-weight: 700; font-size: 1rem; margin-bottom: 6px; color: #0f172a; }
+.template-desc { font-size: .80rem; color: #64748b; line-height: 1.5; }
+
+/* ── Job Cards (matched) ── */
+.matched-job-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 20px;
+    height: 100%;
+    transition: transform .2s, box-shadow .2s;
+    display: flex;
+    flex-direction: column;
+}
+
+.matched-job-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0,0,0,.09);
+    border-color: #bfdbfe;
+}
+
+.matched-job-logo {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    padding: 3px;
+    flex-shrink: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .upload-card  { padding: 24px 18px; }
+    .result-card  { padding: 20px 16px; }
+    .score-circle { width: 90px; height: 90px; font-size: 1.6rem; }
+    .resume-hero  { padding: 50px 0; }
+}

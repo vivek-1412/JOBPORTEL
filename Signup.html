@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobPort | Create Account</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body class="auth-body">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3" href="/">
+                Job<span class="brand-accent">Port</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Auth Card -->
+    <div class="auth-wrapper d-flex align-items-center justify-content-center">
+        <div class="auth-card">
+
+            <!-- Header -->
+            <div class="auth-header text-center mb-4">
+                <div class="auth-icon mb-3">
+                    <i class="bi bi-person-plus"></i>
+                </div>
+                <h2 class="fw-bold">Create your account</h2>
+                <p class="text-muted">Join thousands of job seekers on JobPort</p>
+            </div>
+
+            <!-- Alert Box -->
+            <div id="auth-alert" class="alert d-none mb-3" role="alert"></div>
+
+            <!-- Signup Form -->
+            <form id="signup-form" novalidate>
+
+                <div class="row g-2 mb-3">
+                    <div class="col-6">
+                        <label class="form-label fw-semibold">First Name</label>
+                        <input
+                            type="text"
+                            id="first-name"
+                            class="form-control auth-field"
+                            placeholder="John"
+                            required
+                        />
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label fw-semibold">Last Name</label>
+                        <input
+                            type="text"
+                            id="last-name"
+                            class="form-control auth-field"
+                            placeholder="Doe"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Email Address</label>
+                    <div class="input-group auth-input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-envelope"></i>
+                        </span>
+                        <input
+                            type="email"
+                            id="signup-email"
+                            class="form-control"
+                            placeholder="you@example.com"
+                            required
+                            autocomplete="email"
+                        />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Password</label>
+                    <div class="input-group auth-input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-lock"></i>
+                        </span>
+                        <input
+                            type="password"
+                            id="signup-password"
+                            class="form-control"
+                            placeholder="Min. 8 characters"
+                            required
+                            autocomplete="new-password"
+                            oninput="checkPasswordStrength(this.value)"
+                        />
+                        <button
+                            type="button"
+                            class="input-group-text toggle-pass"
+                            onclick="togglePassword('signup-password', this)">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                    <!-- Password strength bar -->
+                    <div class="mt-2" id="strength-bar-wrap">
+                        <div class="progress" style="height:5px;">
+                            <div id="strength-bar" class="progress-bar" style="width:0%;transition:.3s;"></div>
+                        </div>
+                        <small id="strength-label" class="text-muted"></small>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Confirm Password</label>
+                    <div class="input-group auth-input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-shield-lock"></i>
+                        </span>
+                        <input
+                            type="password"
+                            id="confirm-password"
+                            class="form-control"
+                            placeholder="Re-enter password"
+                            required
+                            autocomplete="new-password"
+                        />
+                    </div>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="agree-terms" required>
+                    <label class="form-check-label text-muted small" for="agree-terms">
+                        I agree to the
+                        <a href="#" class="text-primary">Terms of Service</a> and
+                        <a href="#" class="text-primary">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <button
+                    type="submit"
+                    id="signup-btn"
+                    class="btn btn-primary w-100 py-2 fw-bold auth-submit-btn">
+                    Create Account
+                </button>
+            </form>
+
+            <!-- Divider -->
+            <div class="auth-divider my-4"><span>or</span></div>
+
+            <!-- Social -->
+            <button class="btn btn-outline-secondary w-100 mb-2 social-btn" onclick="loginWithGoogle(event)">
+                <img src="https://www.google.com/favicon.ico" width="18" class="me-2" alt="Google">
+                Sign up with Google
+            </button>
+
+            <!-- Switch to Login -->
+            <p class="text-center text-muted mt-4 mb-0 small">
+                Already have an account?
+                <a href="/login" class="text-primary fw-semibold">Sign in</a>
+            </p>
+
+        </div>
+    </div>
+
+    <!-- 2FA Setup Modal -->
+    <div class="modal fade" id="twoFaSetupModal" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 1rem;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Set Up Two-Factor Authentication</h5>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <i class="bi bi-qr-code text-primary mb-3" style="font-size: 3rem;"></i>
+                    <p class="text-muted mb-2">Scan this QR code with your authenticator app (e.g. Google Authenticator).</p>
+                    <div id="qr-code-container" class="mb-3 d-flex justify-content-center"></div>
+                    <p class="small text-muted mb-4">Or enter this secret manually: <br><strong id="manual-secret" class="fs-5 letter-spacing-1 text-dark"></strong></p>
+                    <button class="btn btn-success w-100 fw-bold rounded-pill" onclick="finishSignup()">I've Scanned It, Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        checkAuthRedirect();
+
+        document.getElementById("signup-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            await handleSignup();
+        });
+    </script>
+</body>
+</html>

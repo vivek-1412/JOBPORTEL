@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobPort | Resume Analyzer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="resume.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3" href="/">Job<span class="brand-accent">Port</span></a>
+            <div class="ms-auto d-flex gap-2" id="nav-actions">
+                <a href="/login"  class="btn btn-outline-light btn-sm rounded-pill px-3">Login</a>
+                <a href="/signup" class="btn btn-primary btn-sm rounded-pill px-3">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="resume-hero d-flex align-items-center">
+        <div class="container text-center text-white">
+            <div class="hero-badge mb-3">🤖 AI-Powered</div>
+            <h1 class="fw-bold mb-3">Resume Analyzer</h1>
+            <p class="lead opacity-75 mb-0">
+                Upload your resume — get an ATS score, expert feedback,<br>
+                and instantly see matching jobs.
+            </p>
+        </div>
+    </div>
+
+    <div class="container py-5">
+
+        <!-- ── UPLOAD SECTION ── -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-7">
+                <div class="upload-card">
+                    <h5 class="fw-bold mb-1 text-center">Upload Your Resume</h5>
+                    <p class="text-muted text-center small mb-4">
+                        Supports PDF, DOCX, DOC, TXT &nbsp;·&nbsp; Max 5 MB
+                    </p>
+
+                    <!-- Drop Zone -->
+                    <div class="drop-zone" id="drop-zone">
+                        <input type="file" id="resume-file" accept=".pdf,.docx,.doc,.txt" hidden>
+                        <div class="drop-content" id="drop-content">
+                            <i class="bi bi-cloud-upload drop-icon"></i>
+                            <p class="fw-semibold mb-1">Drag &amp; drop your resume here</p>
+                            <p class="text-muted small mb-3">or</p>
+                            <button class="btn btn-outline-primary rounded-pill px-4"
+                                    onclick="document.getElementById('resume-file').click()">
+                                Browse File
+                            </button>
+                        </div>
+                        <!-- File selected preview -->
+                        <div class="file-preview d-none" id="file-preview">
+                            <i class="bi bi-file-earmark-text file-preview-icon"></i>
+                            <div>
+                                <div class="fw-semibold" id="file-name">resume.pdf</div>
+                                <div class="text-muted small" id="file-size">0 KB</div>
+                            </div>
+                            <button class="btn btn-sm btn-outline-danger rounded-pill ms-auto"
+                                    onclick="clearFile()">Remove</button>
+                        </div>
+                    </div>
+
+                    <!-- Error alert -->
+                    <div id="upload-error" class="alert alert-danger mt-3 d-none rounded-3"></div>
+
+                    <!-- Analyze button -->
+                    <button class="btn btn-primary w-100 py-2 fw-bold mt-3 rounded-3"
+                            id="analyze-btn" onclick="analyzeResume()" disabled>
+                        <i class="bi bi-cpu me-2"></i>Analyze My Resume
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── LOADING ── -->
+        <div id="loading-section" class="d-none text-center py-5">
+            <div class="analysis-loader mx-auto mb-4">
+                <div class="spinner-border text-primary" style="width:3rem;height:3rem;" role="status"></div>
+            </div>
+            <h5 class="fw-semibold" id="loading-text">Extracting resume content…</h5>
+            <p class="text-muted small">This usually takes 10–20 seconds</p>
+            <div class="progress mx-auto mt-3" style="max-width:320px;height:6px;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                     id="loading-bar" style="width:0%"></div>
+            </div>
+        </div>
+
+        <!-- ── RESULTS SECTION ── -->
+        <div id="results-section" class="d-none">
+
+            <!-- Score + Summary Row -->
+            <div class="row g-4 mb-4">
+
+                <!-- ATS Score Card -->
+                <div class="col-md-4">
+                    <div class="result-card h-100 text-center">
+                        <div class="score-circle mx-auto mb-3" id="score-circle">
+                            <span id="score-number">0</span>
+                        </div>
+                        <h6 class="fw-bold mb-1">ATS Score</h6>
+                        <span class="badge rounded-pill px-3 py-2 fs-6" id="score-badge">–</span>
+                        <p class="text-muted small mt-2 mb-0" id="experience-level"></p>
+                    </div>
+                </div>
+
+                <!-- Score Progress + Job Titles -->
+                <div class="col-md-8">
+                    <div class="result-card h-100">
+                        <h6 class="fw-bold mb-3">
+                            <i class="bi bi-bar-chart-fill text-primary me-2"></i>Score Breakdown
+                        </h6>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between small mb-1">
+                                <span class="text-muted">ATS Compatibility</span>
+                                <span class="fw-semibold" id="score-pct">0%</span>
+                            </div>
+                            <div class="progress" style="height:14px;border-radius:99px;">
+                                <div class="progress-bar rounded-pill"
+                                     id="score-bar"
+                                     role="progressbar"
+                                     style="width:0%;transition:width 1.5s ease;">
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-muted small mb-2 fw-semibold">Best Matching Job Titles:</p>
+                        <div id="job-titles-wrap" class="d-flex flex-wrap gap-2"></div>
+                        <p class="text-muted small mb-2 fw-semibold mt-3">Top Skills Detected:</p>
+                        <div id="keywords-wrap" class="d-flex flex-wrap gap-2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feedback + Strengths Row -->
+            <div class="row g-4 mb-4">
+
+                <!-- Feedback -->
+                <div class="col-md-6">
+                    <div class="result-card h-100">
+                        <h6 class="fw-bold mb-3">
+                            <i class="bi bi-lightbulb-fill text-warning me-2"></i>What to Improve
+                        </h6>
+                        <ul class="feedback-list" id="feedback-list"></ul>
+                    </div>
+                </div>
+
+                <!-- Strengths -->
+                <div class="col-md-6">
+                    <div class="result-card h-100">
+                        <h6 class="fw-bold mb-3">
+                            <i class="bi bi-stars text-success me-2"></i>Your Strengths
+                        </h6>
+                        <ul class="strengths-list" id="strengths-list"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Templates Section -->
+            <div class="result-card mb-4">
+                <h6 class="fw-bold mb-1">
+                    <i class="bi bi-layout-text-sidebar-reverse text-primary me-2"></i>
+                    Recommended Resume Templates
+                </h6>
+                <p class="text-muted small mb-4" id="template-reason"></p>
+                <div class="row g-3" id="templates-row">
+
+                    <!-- Chronological -->
+                    <div class="col-md-4">
+                        <div class="template-card" id="tpl-chronological">
+                            <div class="template-icon">📅</div>
+                            <div class="template-name">Chronological</div>
+                            <div class="template-desc">Best for steady career progression. Lists experience newest-first.</div>
+                            <a href="https://www.overleaf.com/gallery/tagged/cv" target="_blank"
+                               class="btn btn-sm btn-outline-primary rounded-pill mt-2">
+                               Use Template →
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Functional -->
+                    <div class="col-md-4">
+                        <div class="template-card" id="tpl-functional">
+                            <div class="template-icon">🧩</div>
+                            <div class="template-name">Functional</div>
+                            <div class="template-desc">Highlights skills over timeline. Great for career changers.</div>
+                            <a href="https://resumake.io" target="_blank"
+                               class="btn btn-sm btn-outline-primary rounded-pill mt-2">
+                               Use Template →
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Hybrid -->
+                    <div class="col-md-4">
+                        <div class="template-card" id="tpl-hybrid">
+                            <div class="template-icon">⚡</div>
+                            <div class="template-name">Hybrid / Combo</div>
+                            <div class="template-desc">Balances skills and experience. Most popular format today.</div>
+                            <a href="https://rxresu.me" target="_blank"
+                               class="btn btn-sm btn-outline-primary rounded-pill mt-2">
+                               Use Template →
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Matching Jobs Section -->
+            <div id="jobs-section">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <i class="bi bi-briefcase-fill text-primary fs-5"></i>
+                    <h5 class="fw-bold mb-0">Jobs Matching Your Analyzed Resume</h5>
+                    <span class="badge bg-primary rounded-pill ms-1" id="jobs-count">0</span>
+                </div>
+                <p class="text-muted small mb-4">
+                    Based on skills detected: <strong id="keywords-display"></strong>
+                </p>
+                <div class="row g-4" id="matched-jobs-list"></div>
+            </div>
+
+            <!-- Resume Builder Section -->
+            <div id="resume-builder-section" class="mt-5 border-top pt-5">
+                <div class="d-flex align-items-center gap-2 mb-4">
+                    <i class="bi bi-pencil-square text-primary fs-4"></i>
+                    <h4 class="fw-bold mb-0">Modify & Build Resume</h4>
+                </div>
+                <div class="row g-4">
+                    <!-- Builder Form -->
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm rounded-4 h-100">
+                            <div class="card-body p-4">
+                                <h6 class="fw-bold mb-3">Your Details</h6>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-semibold">Full Name</label>
+                                    <input type="text" id="rb-name" class="form-control" placeholder="John Doe">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-semibold">Contact Info</label>
+                                    <input type="text" id="rb-contact" class="form-control" placeholder="john@example.com | +1 234 567 890">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-semibold">Summary</label>
+                                    <textarea id="rb-summary" class="form-control" rows="3" placeholder="Passionate developer..."></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-semibold">Experience / Projects</label>
+                                    <textarea id="rb-exp" class="form-control" rows="4" placeholder="- Built XYZ App..."></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-semibold">Skills (Comma separated)</label>
+                                    <input type="text" id="rb-skills" class="form-control" placeholder="Python, JavaScript, HTML">
+                                </div>
+                                <button class="btn btn-primary w-100 rounded-pill fw-bold mt-2" onclick="updateResumePreview()">
+                                    Update Preview
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Preview -->
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm rounded-4 h-100">
+                            <div class="card-body p-4 bg-light d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="fw-bold mb-0">Live Preview</h6>
+                                    <select id="rb-template" class="form-select form-select-sm w-auto rounded-pill" onchange="updateResumePreview()">
+                                        <option value="modern">Modern (Blue)</option>
+                                        <option value="classic">Classic (Minimal)</option>
+                                        <option value="creative">Creative (Accent)</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Rendered Resume -->
+                                <div id="rb-preview-pane" class="bg-white p-4 shadow-sm flex-grow-1" style="min-height: 400px; font-size: 0.85rem;">
+                                    <div class="text-center mb-3 pb-2 border-bottom">
+                                        <h4 class="fw-bold mb-1" id="pv-name">Your Name</h4>
+                                        <div class="text-muted" id="pv-contact">email@example.com | 123-456-7890</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <h6 class="fw-bold text-uppercase border-bottom pb-1 mb-2" id="pv-summary-title">Summary</h6>
+                                        <div id="pv-summary">Your summary goes here...</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <h6 class="fw-bold text-uppercase border-bottom pb-1 mb-2" id="pv-exp-title">Experience & Projects</h6>
+                                        <div id="pv-exp" style="white-space: pre-wrap;">- Your experience</div>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold text-uppercase border-bottom pb-1 mb-2" id="pv-skills-title">Skills</h6>
+                                        <div id="pv-skills">Skill 1, Skill 2</div>
+                                    </div>
+                                </div>
+                                
+                                <button class="btn btn-success w-100 rounded-pill fw-bold mt-3" onclick="window.print()">
+                                    <i class="bi bi-printer me-2"></i>Print / Save as PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analyze Again -->
+            <div class="text-center mt-5">
+                <button class="btn btn-outline-primary rounded-pill px-5 py-2"
+                        onclick="resetAnalyzer()">
+                    <i class="bi bi-arrow-counterclockwise me-2"></i>Analyze Another Resume
+                </button>
+            </div>
+
+        </div><!-- /results-section -->
+
+    </div><!-- /container -->
+
+    <!-- Footer -->
+    <footer class="site-footer text-center py-4 mt-5">
+        <p class="mb-0">© 2026 <strong>JobPort</strong> — AI Resume Analyzer</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="auth.js"></script>
+    <script src="resume.js"></script>
+</body>
+</html>

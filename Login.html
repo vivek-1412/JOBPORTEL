@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobPort | Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body class="auth-body">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3" href="/">
+                Job<span class="brand-accent">Port</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Auth Card -->
+    <div class="auth-wrapper d-flex align-items-center justify-content-center">
+        <div class="auth-card">
+
+            <!-- Header -->
+            <div class="auth-header text-center mb-4">
+                <div class="auth-icon mb-3">
+                    <i class="bi bi-person-circle"></i>
+                </div>
+                <h2 class="fw-bold">Welcome back</h2>
+                <p class="text-muted">Sign in to your JobPort account</p>
+            </div>
+
+            <!-- Alert Box -->
+            <div id="auth-alert" class="alert d-none mb-3" role="alert"></div>
+
+            <!-- Login Form -->
+            <form id="login-form" novalidate>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Email Address</label>
+                    <div class="input-group auth-input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-envelope"></i>
+                        </span>
+                        <input
+                            type="email"
+                            id="login-email"
+                            class="form-control"
+                            placeholder="you@example.com"
+                            required
+                            autocomplete="email"
+                        />
+                    </div>
+                    <div class="invalid-feedback">Please enter a valid email.</div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <label class="form-label fw-semibold">Password</label>
+                        <a href="/reset-password" class="text-primary small">Forgot password?</a>
+                    </div>
+                    <div class="input-group auth-input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-lock"></i>
+                        </span>
+                        <input
+                            type="password"
+                            id="login-password"
+                            class="form-control"
+                            placeholder="Enter your password"
+                            required
+                            autocomplete="current-password"
+                        />
+                        <button
+                            type="button"
+                            class="input-group-text toggle-pass"
+                            onclick="togglePassword('login-password', this)">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="remember-me">
+                    <label class="form-check-label text-muted small" for="remember-me">
+                        Keep me signed in
+                    </label>
+                </div>
+
+                <button
+                    type="submit"
+                    id="login-btn"
+                    class="btn btn-primary w-100 py-2 fw-bold auth-submit-btn">
+                    Sign In
+                </button>
+            </form>
+
+            <!-- Divider -->
+            <div class="auth-divider my-4">
+                <span>or</span>
+            </div>
+
+            <!-- Social Login -->
+            <button class="btn btn-outline-secondary w-100 mb-2 social-btn" onclick="loginWithGoogle(event)">
+                <img src="https://www.google.com/favicon.ico" width="18" class="me-2" alt="Google">
+                Continue with Google
+            </button>
+
+            <!-- Switch to Signup -->
+            <p class="text-center text-muted mt-4 mb-0 small">
+                Don't have an account?
+                <a href="/signup" class="text-primary fw-semibold">Create one free</a>
+            </p>
+
+        </div>
+    </div>
+
+    <!-- 2FA Modal -->
+    <div class="modal fade" id="twoFaModal" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 1rem;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Two-Factor Authentication</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <i class="bi bi-shield-lock text-primary mb-3" style="font-size: 3rem;"></i>
+                    <p class="text-muted mb-4">Enter the 6-digit code from your authenticator app.</p>
+                    <input type="text" id="two-fa-code" class="form-control text-center fs-4 letter-spacing-2 mb-3" placeholder="000000" maxlength="6">
+                    <button class="btn btn-primary w-100 fw-bold rounded-pill" onclick="submit2FA()">Verify</button>
+                    <div id="two-fa-error" class="text-danger small mt-2 d-none"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        // If already logged in, go home
+        checkAuthRedirect();
+
+        document.getElementById("login-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            await handleLogin();
+        });
+    </script>
+</body>
+</html>

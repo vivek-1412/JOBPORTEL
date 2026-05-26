@@ -1,0 +1,232 @@
+/* ============================================================
+   auth.css — Login & Signup Pages
+   JobPort Authentication Styles
+============================================================ */
+
+/* ── Auth Body ── */
+.auth-body {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 55%, #1a56db 100%);
+    min-height: 100vh;
+}
+
+.auth-body .navbar {
+    background: rgba(0,0,0,.25) !important;
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+/* ── Auth Wrapper ── */
+.auth-wrapper {
+    min-height: calc(100vh - 72px);
+    padding: 40px 16px;
+}
+
+/* ── Auth Card ── */
+.auth-card {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 44px 40px;
+    width: 100%;
+    max-width: 460px;
+    box-shadow: 0 24px 64px rgba(0,0,0,.25);
+    animation: slideUp .35s ease;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* ── Auth Icon ── */
+.auth-icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    font-size: 1.8rem;
+    color: #1a56db;
+}
+
+/* ── Headings ── */
+.auth-card h2 {
+    font-size: 1.55rem;
+    color: #0f172a;
+    letter-spacing: -.3px;
+}
+
+.auth-card .text-muted {
+    color: #64748b !important;
+    font-size: .9rem;
+}
+
+/* ── Input Groups ── */
+.auth-input-group {
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px !important;
+    overflow: hidden;
+    transition: border-color .2s;
+}
+
+.auth-input-group:focus-within {
+    border-color: #1a56db;
+    box-shadow: 0 0 0 3px rgba(26,86,219,.12);
+}
+
+.auth-input-group .input-group-text {
+    background: #f8fafc;
+    border: none;
+    color: #94a3b8;
+    padding: 0 12px;
+}
+
+.auth-input-group .form-control {
+    border: none;
+    padding: 12px 14px;
+    font-size: .93rem;
+    background: #ffffff;
+    color: #0f172a;
+}
+
+.auth-input-group .form-control:focus {
+    box-shadow: none;
+    background: #ffffff;
+}
+
+.auth-input-group .form-control::placeholder {
+    color: #94a3b8;
+}
+
+/* Individual auth fields (no icon) */
+.auth-field {
+    border: 1.5px solid #e2e8f0 !important;
+    border-radius: 10px !important;
+    padding: 11px 14px;
+    font-size: .93rem;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.auth-field:focus {
+    border-color: #1a56db !important;
+    box-shadow: 0 0 0 3px rgba(26,86,219,.12) !important;
+}
+
+/* Password toggle button */
+.toggle-pass {
+    background: #f8fafc;
+    border: none !important;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: color .2s;
+}
+
+.toggle-pass:hover { color: #1a56db; }
+
+/* ── Labels ── */
+.form-label.fw-semibold {
+    font-size: .85rem;
+    color: #374151;
+    margin-bottom: 6px;
+}
+
+/* ── Remember / Terms checkbox ── */
+.form-check-input:checked {
+    background-color: #1a56db;
+    border-color: #1a56db;
+}
+
+/* ── Submit Button ── */
+.auth-submit-btn {
+    background: #1a56db;
+    border: none;
+    border-radius: 10px;
+    font-size: .97rem;
+    letter-spacing: .2px;
+    transition: background .2s, transform .2s;
+}
+
+.auth-submit-btn:hover {
+    background: #1040b0;
+    transform: translateY(-1px);
+}
+
+.auth-submit-btn:disabled {
+    opacity: .7;
+    transform: none;
+    cursor: not-allowed;
+}
+
+/* ── Divider ── */
+.auth-divider {
+    position: relative;
+    text-align: center;
+    color: #94a3b8;
+    font-size: .82rem;
+}
+
+.auth-divider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #e2e8f0;
+}
+
+.auth-divider span {
+    position: relative;
+    background: #fff;
+    padding: 0 12px;
+}
+
+/* ── Social Button ── */
+.social-btn {
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: .88rem;
+    color: #374151;
+    background: #fff;
+    transition: background .2s, border-color .2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-btn:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #0f172a;
+}
+
+/* ── Alert Box ── */
+#auth-alert {
+    border-radius: 10px;
+    font-size: .88rem;
+    padding: 12px 16px;
+}
+
+/* ── Password Strength ── */
+#strength-bar-wrap { margin-top: 6px; }
+#strength-label    { font-size: .78rem; margin-top: 3px; display: block; }
+
+/* ── Links ── */
+.auth-card a.text-primary {
+    color: #1a56db !important;
+    text-decoration: none;
+    font-size: .85rem;
+}
+
+.auth-card a.text-primary:hover { text-decoration: underline; }
+
+/* ── Responsive ── */
+@media (max-width: 500px) {
+    .auth-card {
+        padding: 32px 22px;
+        border-radius: 18px;
+    }
+}
